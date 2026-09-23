@@ -40,10 +40,22 @@ Without a valid credential every call fails closed with HTTP 401 before
 anything runs or is charged (verified against the live endpoint while
 building this node).
 
+## Use as an AI Agent tool
+
+The node sets `usableAsTool: true`, so an n8n **AI Agent** can call
+**Verify VAT IDs** as a tool (n8n 1.85.0 or later; no extra environment
+variable needed). Each call is charged like a normal run, per row VIES answers.
+
 ## Compatibility
 
-Built and compiled against `n8n-workflow` ^1.60 (n8n's public node API,
-version 1). Declarative credential, programmatic node (`execute`).
+Requires n8n **1.85.0 or later**: the node uses `NodeConnectionTypes` from
+`n8n-workflow` (shipped with n8n 1.85.0). Compiled against `n8n-workflow` ^2.16.
+Declarative credential, programmatic node (`execute`).
+
+## Lint
+
+`npm run lint` runs the same rules as the official n8n scan
+(`npx @n8n/scan-community-package`, v0.37.0), see `eslint.config.mjs`.
 
 ## Resources
 

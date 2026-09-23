@@ -2,6 +2,7 @@ import {
 	IAuthenticateGeneric,
 	ICredentialTestRequest,
 	ICredentialType,
+	Icon,
 	INodeProperties,
 } from 'n8n-workflow';
 
@@ -9,6 +10,11 @@ export class JithoxApi implements ICredentialType {
 	name = 'jithoxApi';
 
 	displayName = 'Jithox API';
+
+	icon: Icon = {
+		light: 'file:../nodes/JithoxVat/jithox.svg',
+		dark: 'file:../nodes/JithoxVat/jithox.dark.svg',
+	};
 
 	documentationUrl = 'https://jithox.com/mcp/account';
 
