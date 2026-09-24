@@ -4,6 +4,7 @@ import {
 	INodeType,
 	INodeTypeDescription,
 	NodeApiError,
+	NodeConnectionTypes,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -16,7 +17,7 @@ export class JithoxVat implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Jithox VAT',
 		name: 'jithoxVat',
-		icon: 'file:jithox.svg',
+		icon: { light: 'file:jithox.svg', dark: 'file:jithox.dark.svg' },
 		group: ['transform'],
 		version: 1,
 		subtitle: '={{$parameter["operation"]}}',
@@ -24,8 +25,9 @@ export class JithoxVat implements INodeType {
 		defaults: {
 			name: 'Jithox VAT',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		usableAsTool: true,
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'jithoxApi',

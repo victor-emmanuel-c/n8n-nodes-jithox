@@ -18,9 +18,9 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json && npm run copy:icons",
-    "copy:icons": "node -e \"require('fs').mkdirSync('dist/nodes/JithoxVat',{recursive:true});require('fs').copyFileSync('nodes/JithoxVat/jithox.svg','dist/nodes/JithoxVat/jithox.svg')\"",
+    "copy:icons": "node -e \"const fs=require('fs');fs.mkdirSync('dist/nodes/JithoxVat',{recursive:true});for(const f of ['jithox.svg','jithox.dark.svg'])fs.copyFileSync('nodes/JithoxVat/'+f,'dist/nodes/JithoxVat/'+f)\"",
     "dev": "tsc -p tsconfig.json --watch",
-    "lint": "eslint nodes credentials --ext .ts",
+    "lint": "eslint package.json nodes credentials",
     "prepublishOnly": "npm run build"
   },
   "files": [
@@ -36,11 +36,12 @@
     ]
   },
   "devDependencies": {
+    "@n8n/eslint-plugin-community-nodes": "0.34.0",
     "@types/node": "^20.0.0",
-    "@typescript-eslint/parser": "^6.21.0",
-    "eslint": "^8.57.1",
-    "eslint-plugin-n8n-nodes-base": "^2.0.0",
-    "n8n-workflow": "^1.60.0",
+    "@typescript-eslint/parser": "8.70.0",
+    "eslint": "9.29.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.7",
+    "n8n-workflow": "^2.16.0",
     "typescript": "^5.5.0"
   },
   "peerDependencies": {
