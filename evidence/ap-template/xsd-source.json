@@ -1,0 +1,7 @@
+{
+  "url": "https://raw.githubusercontent.com/ISNIT0/node-iso20022-pain-001.001.03/8c0ce6733432d29432daa62a77a1ec77e50bdbc6/pain.001.001.03.xsd",
+  "sha256": "6bb5c6f24250ab807f31f6164142bafd6d43bad8d162a926e258ff4c11e128af",
+  "bytes": 45859,
+  "provenance": "XSD mirror in library source; not a bank-specific implementation guide",
+  "officialCatalogueAttempt": "HTTP 403 from iso20022.org archive"
+}

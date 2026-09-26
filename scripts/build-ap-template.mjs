@@ -1,0 +1,46 @@
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
+const nodes = [], connections = {};
+const add = (name, type, parameters = {}, extra = {}) => {
+  nodes.push({ id: name.toLowerCase().replaceAll(' ', '-'), name, type: type.includes('.') ? type : `n8n-nodes-base.${type}`, typeVersion: 1, position: [nodes.length * 220, 0], parameters, ...extra });
+};
+const code = (name, file) => {
+  const path = new URL(`../templates/code/${file}.js`, import.meta.url);
+  add(name, 'code', { jsCode: existsSync(path) ? readFileSync(path, 'utf8') : 'return $input.all();' }, { typeVersion: 2 });
+};
+const link = (from, to, branch = 0) => {
+  connections[from] ??= { main: [] };
+  connections[from].main[branch] ??= [];
+  connections[from].main[branch].push({ node: to, type: 'main', index: 0 });
+};
+const condition = (name, value) => add(name, 'if', { conditions: { options: { caseSensitive: true, typeValidation: 'strict', version: 2 }, conditions: [{ id: name, leftValue: value, rightValue: true, operator: { type: 'boolean', operation: 'true', singleValue: true } }], combinator: 'and' }, options: {} }, { typeVersion: 2.2 });
+const http = (name, url, jsonBody) => add(name, 'httpRequest', { method: 'POST', url, sendHeaders: true, headerParameters: { parameters: [{ name: 'User-Agent', value: 'n8n-ap-payment-check/1.0' }, { name: 'Accept', value: 'application/json, text/event-stream' }] }, sendBody: true, specifyBody: 'json', jsonBody, options: { timeout: 15000, response: { response: { fullResponse: true, neverError: true, responseFormat: 'text' } } } }, { typeVersion: 4.2, onError: 'continueRegularOutput' });
+add('Invoice email', 'emailReadImap', { mailbox: 'INBOX', postProcessAction: 'nothing', downloadAttachments: true, format: 'resolved', options: {} }, { typeVersion: 2 });
+code('Select UBL attachment', 'select');
+condition('Has UBL', '={{ $json.hasUbl === true }}');
+add('Manual entry required', 'noOp');
+add('One invoice at a time', 'splitInBatches', { batchSize: 1, options: {} }, { typeVersion: 3 });
+code('Read XML text', 'read-xml');
+add('XML to JSON', 'xml', { mode: 'xmlToJson', dataPropertyName: 'xml', options: { explicitArray: true, mergeAttrs: false, ignoreAttrs: false, trim: true } }, { alwaysOutputData: true, onError: 'continueRegularOutput' });
+code('Map UBL fields', 'map');
+add('Operator settings', 'code', { jsCode: "return [{ json: { ...$input.first().json, operator: { debtorName: '', debtorIban: '', debtorBic: '', executionDate: '', approverEmail: '', fromEmail: '' } } }];" }, { typeVersion: 2 });
+add('Supplier table', 'dataTable', { operation: 'get', dataTableId: { __rl: true, value: '', mode: 'list' }, filters: { conditions: [{ keyName: 'supplierKey', keyValue: "={{ $('Map UBL fields').first().json.supplierKey }}" }] }, returnAll: true }, { alwaysOutputData: true, onError: 'continueRegularOutput' });
+code('Bind trusted supplier', 'supplier');
+http('Payment change check', 'https://jithox.com/api/mcp', '={{ JSON.stringify({ jsonrpc: "2.0", id: "payment-change", method: "tools/call", params: { name: "check_payment_change", arguments: { newIban: $json.invoice?.iban || "", ibanOnFile: $json.ibanOnFile || "", supplierCountry: $json.invoice?.supplier?.countryCode || "" } } }) }}');
+code('Read payment verdict', 'payment');
+http('Invoice review', 'https://jithox.com/api/invoice/review', '={{ JSON.stringify({ invoice: $json.invoice || {} }) }}');
+code('Read review verdict', 'review');
+add('Optional VAT', 'n8n-nodes-jithox.jithoxVat', { operation: 'verifyVatIds', rows: { row: [{ vatId: "={{ $json.invoice.supplier.vatId }}", reference: "={{ $json.invoice.invoiceNumber }}" }] } }, { disabled: true, onError: 'continueRegularOutput' });
+code('Approval summary', 'summary');
+add('Human approval', 'emailSend', { operation: 'sendAndWait', fromEmail: '={{ $json.operator.fromEmail }}', toEmail: '={{ $json.operator.approverEmail }}', subject: '={{ "AP approval: " + ($json.invoice?.invoiceNumber || "manual review") }}', message: '={{ $json.summaryHtml }}', responseType: 'approval', approvalOptions: { values: { approvalType: 'double', approveLabel: 'Verified independently - approve', disapproveLabel: 'Reject' } }, options: { appendAttribution: false, limitWaitTime: { values: { limitType: 'afterTimeInterval', resumeAmount: 24, resumeUnit: 'hours' } } } }, { typeVersion: 2.1, webhookId: 'ap-human-approval' });
+code('Approval gate', 'gate');
+condition('Export allowed', '={{ $json.exportAllowed === true }}');
+code('SEPA and booking proposal', 'sepa');
+add('Rejected or held - log', 'noOp');
+link('Invoice email', 'Select UBL attachment'); link('Select UBL attachment', 'Has UBL'); link('Has UBL', 'One invoice at a time'); link('Has UBL', 'Manual entry required', 1);
+link('One invoice at a time', 'Read XML text', 1);
+const chain = ['Read XML text','XML to JSON','Map UBL fields','Operator settings','Supplier table','Bind trusted supplier','Payment change check','Read payment verdict','Invoice review','Read review verdict','Optional VAT','Approval summary','Human approval','Approval gate','Export allowed'];
+chain.slice(1).forEach((n, i) => link(chain[i], n));
+link('Export allowed', 'SEPA and booking proposal'); link('Export allowed', 'Rejected or held - log', 1);
+link('SEPA and booking proposal', 'One invoice at a time'); link('Rejected or held - log', 'One invoice at a time');
+mkdirSync(new URL('../templates/', import.meta.url), { recursive: true });
+writeFileSync(new URL('../templates/ap-invoice-payment-check.json', import.meta.url), JSON.stringify({ id: 'JithoxApPaymentCheck', name: 'AP - UBL review, human approval, SEPA proposal', nodes, connections, active: false, settings: { executionOrder: 'v1', saveDataSuccessExecution: 'all', saveDataErrorExecution: 'all' }, pinData: {} }, null, 2) + '\n');

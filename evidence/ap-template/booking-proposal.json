@@ -1,0 +1,35 @@
+{
+  "kind": "accounts_payable_proposal",
+  "posted": false,
+  "invoiceNumber": "FICTITIOUS-AP-001",
+  "supplier": {
+    "name": "Fictitious Supplier NOT A REAL BUSINESS",
+    "countryCode": "BE",
+    "vatId": "BE0123456789",
+    "street": "Teststraat 1",
+    "city": "Brussel",
+    "postalZone": "1000",
+    "endpointId": "0123456789",
+    "endpointScheme": "0208"
+  },
+  "amount": "121.00",
+  "currency": "EUR",
+  "payeeIban": "BE71096123456769",
+  "lines": [
+    {
+      "description": "Fictitious service - do not pay",
+      "quantity": 1,
+      "unitPrice": 100,
+      "vatPercent": 21,
+      "taxCategory": "S",
+      "unitCode": "EA"
+    }
+  ],
+  "approval": {
+    "approved": true,
+    "respondedAt": "2026-09-26T19:22:23.872Z"
+  },
+  "executionId": "1",
+  "ledgerAccount": null,
+  "note": "Not posted or paid. Accountant must choose ledger accounts and tax treatment; bank acceptance is not proven."
+}

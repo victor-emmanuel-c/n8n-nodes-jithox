@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.03"><CstmrCdtTrfInitn>
+<GrpHdr><MsgId>AP-1</MsgId><CreDtTm>2026-09-26T19:22:24.181Z</CreDtTm><NbOfTxs>1</NbOfTxs><CtrlSum>121.00</CtrlSum><InitgPty><Nm>Fictitious Buyer - DO NOT PAY</Nm></InitgPty></GrpHdr>
+<PmtInf><PmtInfId>AP-1</PmtInfId><PmtMtd>TRF</PmtMtd><NbOfTxs>1</NbOfTxs><CtrlSum>121.00</CtrlSum><PmtTpInf><SvcLvl><Cd>SEPA</Cd></SvcLvl></PmtTpInf><ReqdExctnDt>2026-10-15</ReqdExctnDt><Dbtr><Nm>Fictitious Buyer - DO NOT PAY</Nm></Dbtr><DbtrAcct><Id><IBAN>BE68539007547034</IBAN></Id></DbtrAcct><DbtrAgt><FinInstnId><BIC>KREDBEBB</BIC></FinInstnId></DbtrAgt><ChrgBr>SLEV</ChrgBr>
+<CdtTrfTxInf><PmtId><EndToEndId>AP-1</EndToEndId></PmtId><Amt><InstdAmt Ccy="EUR">121.00</InstdAmt></Amt><Cdtr><Nm>Fictitious Supplier NOT A REAL BUSINESS</Nm></Cdtr><CdtrAcct><Id><IBAN>BE71096123456769</IBAN></Id></CdtrAcct><RmtInf><Ustrd>FICTITIOUS-AP-001</Ustrd></RmtInf></CdtTrfTxInf>
+</PmtInf></CstmrCdtTrfInitn></Document>

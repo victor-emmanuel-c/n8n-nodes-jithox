@@ -1,0 +1,8 @@
+const base = $('Read review verdict').first().json;
+const rows = $input.all().map(i => i.json);
+const skipped = rows.length === 1 && rows[0].reviewUsable !== undefined;
+const optionalVat = skipped ? {status:'skipped',reason:'Optional credential-backed VAT node is disabled'} : {status:rows.length === 1 && rows[0].status === 'valid' ? 'valid' : 'not_passed',rows};
+const checksPermitExport = !base.inputError && !base.supplierError && ['verify_first','no_change'].includes(base.paymentVerdict) && base.reviewUsable === true && ['skipped','valid'].includes(optionalVat.status);
+const summary = { label:checksPermitExport ? 'HUMAN VERIFICATION REQUIRED' : 'DO NOT PAY - no usable verdict; resolve and rerun', invoice:base.invoice, ibanOnFile:base.ibanOnFile, paymentVerdict:base.paymentVerdict, payment:base.payment, invoiceChecks:base.review?.checks, findings:base.review?.findings, hasUnknowns:base.review?.hasUnknowns ?? true, optionalVat, errors:[base.inputError,base.supplierError,base.paymentError,base.reviewError].filter(Boolean), instructions:'Every invoice requires human approval. For verify_first: call a trusted number already on file, confirm account ownership and the exact IBAN independently, record the callback and obtain a second-person approval. Approval does not fix missing/failed checks. Skipped/unknown VAT is NOT a pass. This creates proposals only, not a payment or ledger posting.' };
+const escape = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+return [{json:{...base,optionalVat,checksPermitExport,summaryHtml:`<pre>${escape(JSON.stringify(summary,null,2))}</pre>`}}];

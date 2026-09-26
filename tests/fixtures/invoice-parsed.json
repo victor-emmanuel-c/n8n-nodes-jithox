@@ -1,0 +1,241 @@
+{
+  "Invoice": {
+    "$": {
+      "xmlns": "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2",
+      "xmlns:cac": "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2",
+      "xmlns:cbc": "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2"
+    },
+    "cbc:ID": [
+      "FICTITIOUS-AP-001"
+    ],
+    "cbc:IssueDate": [
+      "2026-09-26"
+    ],
+    "cbc:DueDate": [
+      "2026-10-15"
+    ],
+    "cbc:InvoiceTypeCode": [
+      "380"
+    ],
+    "cbc:DocumentCurrencyCode": [
+      "EUR"
+    ],
+    "cbc:BuyerReference": [
+      "TEST-ONLY"
+    ],
+    "cac:AccountingSupplierParty": [
+      {
+        "cac:Party": [
+          {
+            "cbc:EndpointID": [
+              {
+                "_": "0123456789",
+                "$": {
+                  "schemeID": "0208"
+                }
+              }
+            ],
+            "cac:PartyName": [
+              {
+                "cbc:Name": [
+                  "Fictitious Supplier NOT A REAL BUSINESS"
+                ]
+              }
+            ],
+            "cac:PostalAddress": [
+              {
+                "cbc:StreetName": [
+                  "Teststraat 1"
+                ],
+                "cbc:CityName": [
+                  "Brussel"
+                ],
+                "cbc:PostalZone": [
+                  "1000"
+                ],
+                "cac:Country": [
+                  {
+                    "cbc:IdentificationCode": [
+                      "BE"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cac:PartyTaxScheme": [
+              {
+                "cbc:CompanyID": [
+                  "BE0123456789"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cac:AccountingCustomerParty": [
+      {
+        "cac:Party": [
+          {
+            "cbc:EndpointID": [
+              {
+                "_": "0987654321",
+                "$": {
+                  "schemeID": "0208"
+                }
+              }
+            ],
+            "cac:PartyName": [
+              {
+                "cbc:Name": [
+                  "Fictitious Buyer NOT A REAL BUSINESS"
+                ]
+              }
+            ],
+            "cac:PostalAddress": [
+              {
+                "cbc:StreetName": [
+                  "Teststraat 2"
+                ],
+                "cbc:CityName": [
+                  "Brussel"
+                ],
+                "cbc:PostalZone": [
+                  "1000"
+                ],
+                "cac:Country": [
+                  {
+                    "cbc:IdentificationCode": [
+                      "BE"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "cac:PartyTaxScheme": [
+              {
+                "cbc:CompanyID": [
+                  "BE0987654321"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "cac:PaymentMeans": [
+      {
+        "cbc:PaymentMeansCode": [
+          "30"
+        ],
+        "cac:PayeeFinancialAccount": [
+          {
+            "cbc:ID": [
+              "BE71096123456769"
+            ]
+          }
+        ]
+      }
+    ],
+    "cac:TaxTotal": [
+      {
+        "cbc:TaxAmount": [
+          {
+            "_": "21.00",
+            "$": {
+              "currencyID": "EUR"
+            }
+          }
+        ]
+      }
+    ],
+    "cac:LegalMonetaryTotal": [
+      {
+        "cbc:LineExtensionAmount": [
+          {
+            "_": "100.00",
+            "$": {
+              "currencyID": "EUR"
+            }
+          }
+        ],
+        "cbc:TaxExclusiveAmount": [
+          {
+            "_": "100.00",
+            "$": {
+              "currencyID": "EUR"
+            }
+          }
+        ],
+        "cbc:TaxInclusiveAmount": [
+          {
+            "_": "121.00",
+            "$": {
+              "currencyID": "EUR"
+            }
+          }
+        ],
+        "cbc:PayableAmount": [
+          {
+            "_": "121.00",
+            "$": {
+              "currencyID": "EUR"
+            }
+          }
+        ]
+      }
+    ],
+    "cac:InvoiceLine": [
+      {
+        "cbc:ID": [
+          "1"
+        ],
+        "cbc:InvoicedQuantity": [
+          {
+            "_": "1",
+            "$": {
+              "unitCode": "EA"
+            }
+          }
+        ],
+        "cbc:LineExtensionAmount": [
+          {
+            "_": "100.00",
+            "$": {
+              "currencyID": "EUR"
+            }
+          }
+        ],
+        "cac:Item": [
+          {
+            "cbc:Name": [
+              "Fictitious service - do not pay"
+            ],
+            "cac:ClassifiedTaxCategory": [
+              {
+                "cbc:ID": [
+                  "S"
+                ],
+                "cbc:Percent": [
+                  "21"
+                ]
+              }
+            ]
+          }
+        ],
+        "cac:Price": [
+          {
+            "cbc:PriceAmount": [
+              {
+                "_": "100.00",
+                "$": {
+                  "currencyID": "EUR"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

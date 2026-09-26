@@ -1,0 +1,11 @@
+{
+  "status": "NIET GEDRAAID",
+  "checkedAt": "2026-09-26T18:34:41.925629+00:00",
+  "freeMemoryMiB": 1046,
+  "requiredStartMemoryMiB": 3000,
+  "reason": "Memory preflight is below the 3000 MiB heavy-work minimum; no Ollama/model process started. Ollama is also not installed on PATH or at its default user installation location. No tool answer fabricated.",
+  "ollamaStarted": false,
+  "modelDownloaded": false,
+  "toolCallExecuted": false,
+  "doesNotProve": "A real AI Agent calling jithoxVatTool. Registration alone is not execution."
+}

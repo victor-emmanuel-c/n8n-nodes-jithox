@@ -1,0 +1,12 @@
+﻿{
+    "issues":  [
+
+               ],
+    "doesNotProve":  "Bank-specific implementation rules, account ownership or acceptance by a bank",
+    "validator":  ".NET System.Xml.XmlReader",
+    "schema":  ".ap-local/pain.001.001.03.xsd",
+    "checkedAt":  "2026-09-26T19:22:53.0698827Z",
+    "status":  "PASS",
+    "xml":  "evidence/ap-template/payment.pain.001.001.03.xml",
+    "bytes":  1016
+}
