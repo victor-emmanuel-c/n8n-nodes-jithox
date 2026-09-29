@@ -12,6 +12,8 @@ export default defineConfig(
 	{ ignores: ['dist/**', 'node_modules/**', 'package-lock.json'] },
 	n8nCommunityNodesPlugin.configs.recommended,
 	{
+		// Match the scanner's allowInlineConfig: false, including direct ESLint use.
+		linterOptions: { noInlineConfig: true },
 		rules: { 'no-console': 'error' },
 	},
 	{ plugins: { 'n8n-nodes-base': n8nNodesPlugin } },
